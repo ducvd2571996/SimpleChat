@@ -6,7 +6,8 @@
     tools:context="com.example.simplechat.ProfileFragment"
     android:orientation="vertical"
     android:gravity="center"
-    android:layout_margin="20dp">
+    android:background="@color/light_blue"
+    android:padding="20dp">
 
     <ImageView
         android:layout_width="160dp"

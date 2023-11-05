@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <item android:title="Tin tức"
+        android:icon="@drawable/launcher_icon"
+        android:id="@+id/menu_feed"
+        />
     <item android:title="Trò chuyện"
         android:icon="@drawable/chat_icon"
         android:id="@+id/menu_chat"

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edit_text_rounded_corner"
+        android:backgroundTint="@color/white"
+        android:padding="8dp"
+        android:id="@+id/main_news_layout"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/my_primary"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:text="Giá điện sinh hoạt phải bù chéo cho giá điện sản xuất"
+            android:id="@+id/news_title"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:paddingHorizontal="4dp"
+            android:layout_marginVertical="10dp"
+            android:layout_centerInParent="true"
+            android:id="@+id/news_img"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:text="Bộ Công Thương cho biết, giá điện bán lẻ cho sản xuất đang thấp hơn chi phí và giá điện bán lẻ sinh hoạt đang bù chéo cho giá điện sản xuất."
+            android:id="@+id/news_description"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/edit_text_rounded_corner"
+            android:backgroundTint="@color/white"
+            android:paddingTop="10dp"
+            android:id="@+id/main_time_layout">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/my_primary"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="20/10/2023"
+                android:id="@+id/news_date"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textColor="@color/my_primary"
+                android:textSize="14sp"
+                android:text="Nguyễn Hoài Nam"
+                android:id="@+id/news_author"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+</RelativeLayout>
