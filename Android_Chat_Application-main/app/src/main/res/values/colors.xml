@@ -3,6 +3,7 @@
 
     <color name="my_primary">#39A7FF</color>
     <color name="my_secondary">#87C4FF</color>
+    <color name="light_blue">#E0F4FF</color>
 
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
