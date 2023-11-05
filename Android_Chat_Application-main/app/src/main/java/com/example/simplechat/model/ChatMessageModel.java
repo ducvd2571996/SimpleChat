@@ -7,6 +7,10 @@ public class ChatMessageModel {
     private String senderId;
     private Timestamp timestamp;
 
+    private String imageBase64 = "";
+
+    private boolean isImage = false;
+
     public ChatMessageModel() {
     }
 
@@ -14,6 +18,22 @@ public class ChatMessageModel {
         this.message = message;
         this.senderId = senderId;
         this.timestamp = timestamp;
+    }
+
+    public String getImageBase64() {
+        return imageBase64;
+    }
+
+    public void setImageBase64(String imageBase64) {
+        this.imageBase64 = imageBase64;
+    }
+
+    public boolean isImage() {
+        return isImage;
+    }
+
+    public void setImage(boolean image) {
+        isImage = image;
     }
 
     public String getMessage() {

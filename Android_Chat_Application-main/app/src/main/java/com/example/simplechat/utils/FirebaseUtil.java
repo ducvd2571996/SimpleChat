@@ -73,6 +73,11 @@ public class FirebaseUtil {
                 .child(FirebaseUtil.currentUserId());
     }
 
+    public static StorageReference getCurrentChatImageStorageRef(){
+        return FirebaseStorage.getInstance().getReference().child("chat_pic")
+                .child(FirebaseUtil.currentUserId());
+    }
+
     public static StorageReference  getOtherProfilePicStorageRef(String otherUserId){
         return FirebaseStorage.getInstance().getReference().child("profile_pic")
                 .child(otherUserId);

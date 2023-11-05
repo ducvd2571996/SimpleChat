@@ -1,36 +1,52 @@
 package com.example.simplechat;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.util.Base64;
+import android.util.Log;
 
-import com.example.simplechat.R;
 import com.example.simplechat.adapter.ChatRecyclerAdapter;
+import com.example.simplechat.databinding.ActivityChatBinding;
 import com.example.simplechat.model.ChatMessageModel;
 import com.example.simplechat.model.ChatroomModel;
 import com.example.simplechat.model.UserModel;
 import com.example.simplechat.utils.AndroidUtil;
 import com.example.simplechat.utils.FirebaseUtil;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.UploadTask;
 
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
+import kotlinx.coroutines.CoroutineScope;
+import kotlinx.coroutines.CoroutineScopeKt;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -46,155 +62,149 @@ public class ChatActivity extends AppCompatActivity {
     ChatroomModel chatroomModel;
     ChatRecyclerAdapter adapter;
 
-    EditText messageInput;
-    ImageButton sendMessageBtn;
-    ImageButton backBtn;
-    TextView otherUsername;
-    RecyclerView recyclerView;
-    ImageView imageView;
+    ActivityResultLauncher<Intent> imagePickLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == Activity.RESULT_OK) {
+            Intent data = result.getData();
+            if (data != null && data.getData() != null) {
+                handleSelectedImage(data.getData());
+            }
+        }
+    });
+
+    private Handler handle;
+    private HandlerThread thread;
+
+    private ActivityChatBinding vb;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat);
+        vb = ActivityChatBinding.inflate(getLayoutInflater());
+        setContentView(vb.getRoot());
+
+        thread = new HandlerThread("Chat");
+        thread.start();
+        handle = new Handler(thread.getLooper());
 
         //get UserModel
         otherUser = AndroidUtil.getUserModelFromIntent(getIntent());
-        chatroomId = FirebaseUtil.getChatroomId(FirebaseUtil.currentUserId(),otherUser.getUserId());
+        chatroomId = FirebaseUtil.getChatroomId(FirebaseUtil.currentUserId(), otherUser.getUserId());
 
-        messageInput = findViewById(R.id.chat_message_input);
-        sendMessageBtn = findViewById(R.id.message_send_btn);
-        backBtn = findViewById(R.id.back_btn);
-        otherUsername = findViewById(R.id.other_username);
-        recyclerView = findViewById(R.id.chat_recycler_view);
-        imageView = findViewById(R.id.profile_pic_image_view);
+        FirebaseUtil.getOtherProfilePicStorageRef(otherUser.getUserId()).getDownloadUrl().addOnCompleteListener(t -> {
+            if (t.isSuccessful()) {
+                Uri uri = t.getResult();
+                AndroidUtil.setProfilePic(this, uri, vb.imageUser);
+            }
+        });
 
-        FirebaseUtil.getOtherProfilePicStorageRef(otherUser.getUserId()).getDownloadUrl()
-                .addOnCompleteListener(t -> {
-                    if(t.isSuccessful()){
-                        Uri uri  = t.getResult();
-                        AndroidUtil.setProfilePic(this,uri,imageView);
-                    }
-                });
-
-        backBtn.setOnClickListener((v)->{
+        vb.actionBack.setOnClickListener((v) -> {
             onBackPressed();
         });
-        otherUsername.setText(otherUser.getUsername());
+        vb.userName.setText(otherUser.getUsername());
 
-        sendMessageBtn.setOnClickListener((v -> {
-            String message = messageInput.getText().toString().trim();
-            if(message.isEmpty())
-                return;
+        vb.actionSend.setOnClickListener((v -> {
+            String message = vb.input.getText().toString().trim();
+            if (message.isEmpty()) return;
             sendMessageToUser(message);
         }));
+        vb.actionGallery.setOnClickListener(view -> {
+            onClickGallery();
+        });
 
         getOrCreateChatroomModel();
         setupChatRecyclerView();
     }
 
-    void setupChatRecyclerView(){
-        Query query = FirebaseUtil.getChatroomMessageReference(chatroomId)
-                .orderBy("timestamp", Query.Direction.DESCENDING);
+    void setupChatRecyclerView() {
+        Query query = FirebaseUtil.getChatroomMessageReference(chatroomId).orderBy("timestamp", Query.Direction.DESCENDING);
 
-        FirestoreRecyclerOptions<ChatMessageModel> options = new FirestoreRecyclerOptions.Builder<ChatMessageModel>()
-                .setQuery(query,ChatMessageModel.class).build();
+        FirestoreRecyclerOptions<ChatMessageModel> options = new FirestoreRecyclerOptions.Builder<ChatMessageModel>().setQuery(query, ChatMessageModel.class).build();
 
-        adapter = new ChatRecyclerAdapter(options,getApplicationContext());
+        adapter = new ChatRecyclerAdapter(options, getApplicationContext());
         LinearLayoutManager manager = new WrapContentLinearLayoutManager(this);
         manager.setReverseLayout(true);
-        recyclerView.setLayoutManager(manager);
-        recyclerView.setAdapter(adapter);
+        vb.recyclerView.setLayoutManager(manager);
+        vb.recyclerView.setAdapter(adapter);
         adapter.startListening();
         adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
                 super.onItemRangeInserted(positionStart, itemCount);
-                recyclerView.smoothScrollToPosition(0);
+                vb.recyclerView.smoothScrollToPosition(0);
             }
         });
     }
 
-    void sendMessageToUser(String message){
+    void sendMessageToUser(String message) {
 
         chatroomModel.setLastMessageTimestamp(Timestamp.now());
         chatroomModel.setLastMessageSenderId(FirebaseUtil.currentUserId());
         chatroomModel.setLastMessage(message);
         FirebaseUtil.getChatroomReference(chatroomId).set(chatroomModel);
 
-        ChatMessageModel chatMessageModel = new ChatMessageModel(message,FirebaseUtil.currentUserId(),Timestamp.now());
-        FirebaseUtil.getChatroomMessageReference(chatroomId).add(chatMessageModel)
-                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentReference> task) {
-                        if(task.isSuccessful()){
-                            messageInput.setText("");
-                            sendNotification(message);
-                        }
-                    }
-                });
+        ChatMessageModel chatMessageModel = new ChatMessageModel(message, FirebaseUtil.currentUserId(), Timestamp.now());
+        FirebaseUtil.getChatroomMessageReference(chatroomId).add(chatMessageModel).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentReference> task) {
+                if (task.isSuccessful()) {
+                    vb.input.setText("");
+                    sendNotification(message);
+                }
+            }
+        });
     }
 
-    void getOrCreateChatroomModel(){
+    void getOrCreateChatroomModel() {
         FirebaseUtil.getChatroomReference(chatroomId).get().addOnCompleteListener(task -> {
-            if(task.isSuccessful()){
+            if (task.isSuccessful()) {
                 chatroomModel = task.getResult().toObject(ChatroomModel.class);
-                if(chatroomModel==null){
+                if (chatroomModel == null) {
                     //first time chat
-                    chatroomModel = new ChatroomModel(
-                            chatroomId,
-                            Arrays.asList(FirebaseUtil.currentUserId(),otherUser.getUserId()),
-                            Timestamp.now(),
-                            ""
-                    );
+                    chatroomModel = new ChatroomModel(chatroomId, Arrays.asList(FirebaseUtil.currentUserId(), otherUser.getUserId()), Timestamp.now(), "");
                     FirebaseUtil.getChatroomReference(chatroomId).set(chatroomModel);
                 }
             }
         });
     }
 
-    void sendNotification(String message){
+    void sendNotification(String message) {
 
-       FirebaseUtil.currentUserDetails().get().addOnCompleteListener(task -> {
-           if(task.isSuccessful()){
-               UserModel currentUser = task.getResult().toObject(UserModel.class);
-               try{
-                   JSONObject jsonObject  = new JSONObject();
+        FirebaseUtil.currentUserDetails().get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                UserModel currentUser = task.getResult().toObject(UserModel.class);
+                try {
+                    JSONObject jsonObject = new JSONObject();
 
-                   JSONObject notificationObj = new JSONObject();
-                   notificationObj.put("title",currentUser.getUsername());
-                   notificationObj.put("body",message);
+                    JSONObject notificationObj = new JSONObject();
+                    notificationObj.put("title", currentUser.getUsername());
+                    notificationObj.put("body", message);
 
-                   JSONObject dataObj = new JSONObject();
-                   dataObj.put("userId",currentUser.getUserId());
+                    JSONObject dataObj = new JSONObject();
+                    dataObj.put("userId", currentUser.getUserId());
 
-                   jsonObject.put("notification",notificationObj);
-                   jsonObject.put("data",dataObj);
-                   jsonObject.put("to",otherUser.getFcmToken());
+                    jsonObject.put("notification", notificationObj);
+                    jsonObject.put("data", dataObj);
+                    jsonObject.put("to", otherUser.getFcmToken());
 
-                   callApi(jsonObject);
+                    callApi(jsonObject);
 
 
-               }catch (Exception e){
+                } catch (Exception e) {
 
-               }
+                }
 
-           }
-       });
+            }
+        });
 
     }
 
-    void callApi(JSONObject jsonObject){
-         MediaType JSON = MediaType.get("application/json; charset=utf-8");
-         OkHttpClient client = new OkHttpClient();
+    void callApi(JSONObject jsonObject) {
+        MediaType JSON = MediaType.get("application/json; charset=utf-8");
+        OkHttpClient client = new OkHttpClient();
         String url = "https://fcm.googleapis.com/fcm/send";
-        RequestBody body = RequestBody.create(jsonObject.toString(),JSON);
-        Request request = new Request.Builder()
-                .url(url)
-                .post(body)
-                .header("Authorization","Bearer AAAAN-B-33k:APA91bGzTArlI8HT8jkzjuiXvGwKjrVcFqROn4e8m7wEMJKjZllaOR3srS5IRcp-Wy6uwr_2xYmRrdWQZbUmqq91xVHOrrYjd-mmuejucNuBvM8U9EI1FgZoD6nbp1gXTULaTpayrjPV")
-                .build();
+        RequestBody body = RequestBody.create(jsonObject.toString(), JSON);
+        Request request = new Request.Builder().url(url).post(body).header("Authorization", "Bearer AAAAN-B-33k:APA91bGzTArlI8HT8jkzjuiXvGwKjrVcFqROn4e8m7wEMJKjZllaOR3srS5IRcp-Wy6uwr_2xYmRrdWQZbUmqq91xVHOrrYjd-mmuejucNuBvM8U9EI1FgZoD6nbp1gXTULaTpayrjPV").build();
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
@@ -206,25 +216,37 @@ public class ChatActivity extends AppCompatActivity {
 
             }
         });
-
     }
 
+    /**
+     * onClick gallery
+     */
+    private void onClickGallery() {
+        ImagePicker.with(this).cropSquare().compress(512).maxResultSize(512, 512).createIntent(new Function1<Intent, Unit>() {
+            @Override
+            public Unit invoke(Intent intent) {
+                imagePickLauncher.launch(intent);
+                return null;
+            }
+        });
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    private void handleSelectedImage(Uri data) {
+        handle.post(() -> {
+            try {
+                InputStream imageStream = getContentResolver().openInputStream(data);
+                Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                String image = AndroidUtil.bitmapToBytes(selectedImage);
+                if (!image.isEmpty()) {
+                    ChatMessageModel chatMessageModel = new ChatMessageModel("", FirebaseUtil.currentUserId(), Timestamp.now());
+                    chatMessageModel.setImage(true);
+                    chatMessageModel.setImageBase64(image);
+                    DocumentReference document = Tasks.await(FirebaseUtil.getChatroomMessageReference(chatroomId).add(chatMessageModel));
+                }
+            } catch (Exception e) {
+                Log.d("ChatActivity", e.getMessage());
+            }
+        });
+    }
 
 }
