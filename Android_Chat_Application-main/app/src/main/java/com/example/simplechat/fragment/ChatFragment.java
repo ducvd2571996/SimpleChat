@@ -55,30 +55,27 @@ public class ChatFragment extends Fragment {
 
     private void setupSuggestionRecyclerView() {
         try {
-            FirebaseUtil.currentUserDetails().get().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    try {
-                        UserModel mainUser = task.getResult().toObject(UserModel.class);
-                        if (mainUser.getFriendIds() != null) {
-                            Query query = FirebaseUtil.allUserCollectionReference()
-                                    .whereIn("userId", mainUser.getFriendIds());
-                            FirestoreRecyclerOptions<UserModel> options = new FirestoreRecyclerOptions.Builder<UserModel>()
-                                    .setQuery(query, UserModel.class).build();
-                            suggestionsUserAdapter = new SuggestionsUserAdapter(options, getContext());
-                            vb.recylerViewSuggestions.setAdapter(suggestionsUserAdapter);
-                            suggestionsUserAdapter.startListening();
-                        } else  {
-                            AndroidUtil.showToast(getContext(), "Không có bạn");
-                        }
-
-                    } catch (Exception e) {
-                        Log.d("erroor", "setupSuggestionRecyclerView: " + e.getMessage());
+            FirebaseUtil.currentUserDetails().addSnapshotListener((value, error) -> {
+                try{
+                    UserModel mainUser = value.toObject(UserModel.class);
+                    if (mainUser.getFriendIds() != null) {
+                        Query query = FirebaseUtil.allUserCollectionReference().whereIn("userId", mainUser.getFriendIds());
+                        FirestoreRecyclerOptions<UserModel> options = new FirestoreRecyclerOptions.Builder<UserModel>().setQuery(query, UserModel.class).build();
+                        suggestionsUserAdapter = new SuggestionsUserAdapter(options, getContext());
+                        vb.recylerViewSuggestions.setAdapter(suggestionsUserAdapter);
+                        suggestionsUserAdapter.startListening();
+                    } else {
+                        AndroidUtil.showToast(getContext(), "Không có bạn");
                     }
-                } else {
-                    AndroidUtil.showToast(getContext(), "load bạn thất bại!");
+                }catch (Exception e){
+                    Query query = FirebaseUtil.allUserCollectionReference().whereEqualTo("userId", "");
+                    FirestoreRecyclerOptions<UserModel> options = new FirestoreRecyclerOptions.Builder<UserModel>().setQuery(query, UserModel.class).build();
+                    suggestionsUserAdapter = new SuggestionsUserAdapter(options, getContext());
+                    vb.recylerViewSuggestions.setAdapter(suggestionsUserAdapter);
+                    suggestionsUserAdapter.startListening();
                 }
-            });
 
+            });
         } catch (Exception e) {
             Log.d("erooooooor", "setupRecyclerView: " + e);
         }
