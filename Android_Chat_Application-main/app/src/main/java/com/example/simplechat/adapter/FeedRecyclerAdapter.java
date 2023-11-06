@@ -3,7 +3,6 @@ package com.example.simplechat.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +12,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.simplechat.ChatActivity;
-import com.example.simplechat.FeedDetailActivity;
+import com.example.simplechat.activity.FeedDetailActivity;
 import com.example.simplechat.R;
-import com.example.simplechat.model.ChatroomModel;
 import com.example.simplechat.model.FeedModel;
-import com.example.simplechat.model.UserModel;
 import com.example.simplechat.utils.AndroidUtil;
-import com.example.simplechat.utils.FirebaseUtil;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 

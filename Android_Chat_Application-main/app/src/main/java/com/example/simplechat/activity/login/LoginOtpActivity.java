@@ -1,4 +1,4 @@
-package com.example.simplechat;
+package com.example.simplechat.activity.login;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.simplechat.Constant;
 import com.example.simplechat.R;
 import com.example.simplechat.utils.AndroidUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -121,7 +122,7 @@ public class LoginOtpActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 setInProgress(false);
                 if(task.isSuccessful()){
-                    Intent intent = new Intent(LoginOtpActivity.this,LoginUsernameActivity.class);
+                    Intent intent = new Intent(LoginOtpActivity.this, LoginUsernameActivity.class);
                     intent.putExtra("phone",phoneNumber);
                     startActivity(intent);
                 }else{

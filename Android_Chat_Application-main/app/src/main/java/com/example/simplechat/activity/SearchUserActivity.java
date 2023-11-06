@@ -1,4 +1,4 @@
-package com.example.simplechat;
+package com.example.simplechat.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.example.simplechat.R;
+import com.example.simplechat.WrapContentLinearLayoutManager;
 import com.example.simplechat.adapter.SearchUserRecyclerAdapter;
 import com.example.simplechat.model.UserModel;
 import com.example.simplechat.utils.FirebaseUtil;

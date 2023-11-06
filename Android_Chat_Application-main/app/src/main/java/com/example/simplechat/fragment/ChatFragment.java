@@ -1,8 +1,7 @@
-package com.example.simplechat;
+package com.example.simplechat.fragment;
 
 import android.os.Bundle;
 
-import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -14,20 +13,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.simplechat.R;
+import com.example.simplechat.WrapContentLinearLayoutManager;
 import com.example.simplechat.adapter.RecentChatRecyclerAdapter;
 import com.example.simplechat.adapter.SuggestionsUserAdapter;
 import com.example.simplechat.databinding.FragmentChatBinding;
-import com.example.simplechat.databinding.FragmentProfileBinding;
 import com.example.simplechat.model.ChatroomModel;
 import com.example.simplechat.model.UserModel;
 import com.example.simplechat.utils.AndroidUtil;
 import com.example.simplechat.utils.FirebaseUtil;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.Query;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ChatFragment extends Fragment {
 
@@ -39,7 +34,7 @@ public class ChatFragment extends Fragment {
 
     public ChatFragment() {
     }
-    
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

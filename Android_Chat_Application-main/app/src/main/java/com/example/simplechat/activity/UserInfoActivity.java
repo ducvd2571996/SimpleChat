@@ -1,26 +1,19 @@
-package com.example.simplechat;
+package com.example.simplechat.activity;
 
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.example.simplechat.adapter.SuggestionsUserAdapter;
-import com.example.simplechat.databinding.ActivityChatBinding;
+import com.example.simplechat.R;
+import com.example.simplechat.activity.ChatActivity;
 import com.example.simplechat.databinding.ActivityUserInfoBinding;
 import com.example.simplechat.model.UserModel;
 import com.example.simplechat.utils.AndroidUtil;
 import com.example.simplechat.utils.FirebaseUtil;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.List;

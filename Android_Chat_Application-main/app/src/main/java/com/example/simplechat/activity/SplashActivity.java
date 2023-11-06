@@ -1,4 +1,4 @@
-package com.example.simplechat;
+package com.example.simplechat.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.example.simplechat.R;
+import com.example.simplechat.activity.login.LoginPhoneNumberActivity;
 import com.example.simplechat.model.UserModel;
 import com.example.simplechat.utils.AndroidUtil;
 import com.example.simplechat.utils.FirebaseUtil;
@@ -26,7 +27,7 @@ public class SplashActivity extends AppCompatActivity {
                         if(task.isSuccessful()){
                             UserModel model = task.getResult().toObject(UserModel.class);
 
-                            Intent mainIntent = new Intent(this,MainActivity.class);
+                            Intent mainIntent = new Intent(this, MainActivity.class);
                             mainIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                             startActivity(mainIntent);
 
@@ -46,7 +47,7 @@ public class SplashActivity extends AppCompatActivity {
                     if(FirebaseUtil.isLoggedIn()){
                         startActivity(new Intent(SplashActivity.this,MainActivity.class));
                     }else{
-                        startActivity(new Intent(SplashActivity.this,LoginPhoneNumberActivity.class));
+                        startActivity(new Intent(SplashActivity.this, LoginPhoneNumberActivity.class));
                     }
                     finish();
                 }

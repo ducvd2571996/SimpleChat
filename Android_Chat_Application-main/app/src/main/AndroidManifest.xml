@@ -14,48 +14,48 @@
         android:theme="@style/Theme.SimpleChat"
         tools:targetApi="31">
         <activity
-            android:name=".UserInfoActivity"
+            android:name=".activity.UserInfoActivity"
             android:exported="false" />
         <activity
-            android:name=".FeedDetailActivity"
+            android:name=".activity.FeedDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".ChatActivity"
+            android:name=".activity.ChatActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".SearchUserActivity"
+            android:name=".activity.SearchUserActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".LoginUsernameActivity"
+            android:name=".activity.login.LoginUsernameActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".LoginOtpActivity"
+            android:name=".activity.login.LoginOtpActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".LoginPhoneNumberActivity"
+            android:name=".activity.login.LoginPhoneNumberActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".SplashActivity"
+            android:name=".activity.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -68,7 +68,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

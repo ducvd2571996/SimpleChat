@@ -13,7 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.simplechat.ChatActivity;
+import com.example.simplechat.activity.ChatActivity;
 import com.example.simplechat.R;
 import com.example.simplechat.model.ChatroomModel;
 import com.example.simplechat.model.UserModel;

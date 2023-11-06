@@ -1,4 +1,4 @@
-package com.example.simplechat;
+package com.example.simplechat.fragment;
 
 import android.os.Bundle;
 
@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.simplechat.R;
+import com.example.simplechat.WrapContentLinearLayoutManager;
 import com.example.simplechat.adapter.FeedRecyclerAdapter;
 import com.example.simplechat.adapter.RecentChatRecyclerAdapter;
 import com.example.simplechat.model.ChatroomModel;

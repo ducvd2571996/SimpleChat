@@ -1,4 +1,4 @@
-package com.example.simplechat;
+package com.example.simplechat.activity;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -15,9 +15,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.util.Base64;
 import android.util.Log;
 
+import com.example.simplechat.WrapContentLinearLayoutManager;
 import com.example.simplechat.adapter.ChatRecyclerAdapter;
 import com.example.simplechat.databinding.ActivityChatBinding;
 import com.example.simplechat.model.ChatMessageModel;
@@ -28,14 +28,11 @@ import com.example.simplechat.utils.FirebaseUtil;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.storage.FileDownloadTask;
-import com.google.firebase.storage.UploadTask;
 
 import org.json.JSONObject;
 
@@ -45,8 +42,6 @@ import java.util.Arrays;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
-import kotlinx.coroutines.CoroutineScope;
-import kotlinx.coroutines.CoroutineScopeKt;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;

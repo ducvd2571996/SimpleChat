@@ -1,4 +1,4 @@
-package com.example.simplechat;
+package com.example.simplechat.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,18 +10,15 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
-import com.example.simplechat.R;
+
+import com.example.simplechat.App;
+import com.example.simplechat.Constant;
+import com.example.simplechat.activity.SplashActivity;
 import com.example.simplechat.databinding.FragmentProfileBinding;
 import com.example.simplechat.model.UserModel;
 import com.example.simplechat.utils.AndroidUtil;
@@ -29,14 +26,10 @@ import com.example.simplechat.utils.FirebaseUtil;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
-import kotlinx.coroutines.CoroutineScope;
-import kotlinx.coroutines.Dispatchers;
-import kotlinx.coroutines.Job;
 
 public class ProfileFragment extends Fragment {
 

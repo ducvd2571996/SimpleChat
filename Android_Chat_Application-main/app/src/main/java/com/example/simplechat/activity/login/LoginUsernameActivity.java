@@ -1,4 +1,4 @@
-package com.example.simplechat;
+package com.example.simplechat.activity.login;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
+import com.example.simplechat.Constant;
+import com.example.simplechat.activity.MainActivity;
 import com.example.simplechat.R;
 import com.example.simplechat.model.UserModel;
 import com.example.simplechat.utils.FirebaseUtil;
@@ -64,7 +66,7 @@ public class LoginUsernameActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 setInProgress(false);
                 if(task.isSuccessful()){
-                   Intent intent = new Intent(LoginUsernameActivity.this,MainActivity.class);
+                   Intent intent = new Intent(LoginUsernameActivity.this, MainActivity.class);
                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK );
                    startActivity(intent);
                 }

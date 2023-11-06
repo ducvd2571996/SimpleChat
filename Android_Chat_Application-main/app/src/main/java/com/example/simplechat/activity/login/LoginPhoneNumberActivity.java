@@ -1,4 +1,4 @@
-package com.example.simplechat;
+package com.example.simplechat.activity.login;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -37,7 +37,7 @@ public class LoginPhoneNumberActivity extends AppCompatActivity {
                 phoneInput.setError("Số điện thoại không hợp lệ");
                 return;
             }
-            Intent intent = new Intent(LoginPhoneNumberActivity.this,LoginOtpActivity.class);
+            Intent intent = new Intent(LoginPhoneNumberActivity.this, LoginOtpActivity.class);
             intent.putExtra("phone",countryCodePicker.getFullNumberWithPlus());
             startActivity(intent);
         });

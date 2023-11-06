@@ -1,4 +1,4 @@
-package com.example.simplechat;
+package com.example.simplechat.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,7 +9,10 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageButton;
 
+import com.example.simplechat.fragment.ProfileFragment;
 import com.example.simplechat.R;
+import com.example.simplechat.fragment.ChatFragment;
+import com.example.simplechat.fragment.FeedFragment;
 import com.example.simplechat.utils.FirebaseUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -37,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         searchButton = findViewById(R.id.main_search_btn);
 
         searchButton.setOnClickListener((v)->{
-            startActivity(new Intent(MainActivity.this,SearchUserActivity.class));
+            startActivity(new Intent(MainActivity.this, SearchUserActivity.class));
         });
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {

@@ -1,4 +1,4 @@
-package com.example.simplechat;
+package com.example.simplechat.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.simplechat.R;
 import com.example.simplechat.model.FeedModel;
 import com.example.simplechat.utils.AndroidUtil;
 
