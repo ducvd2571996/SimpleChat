@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -65,6 +66,14 @@ public class AndroidUtil {
         intent.putExtra("date",model.getDate());
         intent.putExtra("author",model.getAuthor());
         intent.putExtra("extra_image", model.getExtra_image());
+    }
+
+    public static void passUserIdAsIntent(Intent intent, UserModel model) {
+        intent.putExtra("userId", model.getUserId());
+    }
+
+    public static String getUserIdAsIntent(Intent intent){
+        return intent.getStringExtra("userId");
     }
 
     public static FeedModel getFeedModelDetail(Intent intent){

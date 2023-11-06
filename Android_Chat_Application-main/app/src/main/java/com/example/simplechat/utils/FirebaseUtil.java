@@ -1,5 +1,6 @@
 package com.example.simplechat.utils;
 
+import com.example.simplechat.model.UserModel;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -9,6 +10,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FirebaseUtil {
@@ -26,6 +28,10 @@ public class FirebaseUtil {
 
     public static DocumentReference currentUserDetails(){
         return FirebaseFirestore.getInstance().collection("users").document(currentUserId());
+    }
+
+    public static DocumentReference getUserDetails(String id){
+        return FirebaseFirestore.getInstance().collection("users").document(id);
     }
 
     public static CollectionReference allUserCollectionReference(){

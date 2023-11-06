@@ -98,6 +98,13 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        vb.frameClick.setOnClickListener((v)->{
+            Intent intent = new Intent(this, UserInfoActivity.class);
+            AndroidUtil.passUserIdAsIntent(intent,otherUser);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            this.startActivity(intent);
+        });
+
         vb.actionBack.setOnClickListener((v) -> {
             onBackPressed();
         });

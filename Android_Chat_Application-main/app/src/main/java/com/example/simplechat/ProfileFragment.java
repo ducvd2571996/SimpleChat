@@ -100,11 +100,19 @@ public class ProfileFragment extends Fragment {
 
     void updateBtnClick() {
         String newUsername = vb.profileUsername.getText().toString();
+        String newIntro = vb.profileIntro.getText().toString();
         if (newUsername.isEmpty() || newUsername.length() < 3) {
             vb.profileUsername.setError(Constant.MAX_CHARS);
             return;
         }
+
+        if (newIntro.isEmpty() || newIntro.length() < 3) {
+            vb.profileIntro.setError(Constant.MAX_CHARS);
+            return;
+        }
+
         currentUserModel.setUsername(newUsername);
+        currentUserModel.setIntro(newIntro);
         setInProgress(true);
 
 

@@ -57,6 +57,12 @@ public class SearchUserActivity extends AppCompatActivity {
         Query query = FirebaseUtil.allUserCollectionReference()
                 .whereGreaterThanOrEqualTo("username", searchTerm)
                 .whereLessThanOrEqualTo("username", searchTerm + '\uf8ff');
+        query.get().addOnCompleteListener((task ->{
+           if (task.getResult().isEmpty())
+           {
+               searchInput.setError("Tên người dùng không tồn tại");
+           }
+        }));
 
         FirestoreRecyclerOptions<UserModel> options = new FirestoreRecyclerOptions.Builder<UserModel>()
                 .setQuery(query, UserModel.class).build();

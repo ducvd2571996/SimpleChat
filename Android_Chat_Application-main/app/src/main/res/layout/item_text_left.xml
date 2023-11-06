@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/edit_text_rounded_corner"
-            android:backgroundTint="@color/chat_color_sender"
+            android:backgroundTint="@color/chat_color_receiver"
             android:padding="10dp"
             android:textColor="@color/white"
             android:textSize="18sp"

@@ -12,6 +12,13 @@
         android:background="@color/my_primary"
         android:padding="10dp">
 
+        <RelativeLayout
+            android:id="@+id/frame_click"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/my_primary"
+            android:layout_toRightOf="@id/actionBack"
+            android:padding="10dp">
         <TextView
             android:id="@+id/userName"
             android:layout_width="wrap_content"
@@ -24,21 +31,20 @@
             android:textSize="22sp"
             android:textStyle="bold" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/imageUser"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/person_icon"
+            android:src="@drawable/person_icon_chat"
             android:padding="4dp"
             android:background="@drawable/circular_bg"
             android:backgroundTint="@color/off_white"
-            android:layout_marginStart="10dp"
-            android:layout_toRightOf="@id/actionBack" />
-
+            android:layout_marginStart="10dp" />
+        </RelativeLayout>
         <ImageButton
             android:id="@+id/actionBack"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_centerVertical="true"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/icon_back"

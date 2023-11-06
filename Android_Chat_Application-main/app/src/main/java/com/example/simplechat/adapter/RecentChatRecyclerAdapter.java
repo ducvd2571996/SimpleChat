@@ -52,7 +52,7 @@ public class RecentChatRecyclerAdapter extends FirestoreRecyclerAdapter<Chatroom
 
                             holder.usernameText.setText(otherUserModel.getUsername());
                             if(lastMessageSentByMe)
-                                holder.lastMessageText.setText("Bạn: "+model.getLastMessage());
+                                holder.lastMessageText.setText("Bạn: " + model.getLastMessage());
                             else
                                 holder.lastMessageText.setText(model.getLastMessage());
                             holder.lastMessageTime.setText(FirebaseUtil.timestampToString(model.getLastMessageTimestamp()));
