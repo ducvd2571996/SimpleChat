@@ -34,6 +34,7 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.Query;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -201,12 +202,12 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
-    void callApi(JSONObject jsonObject) {
+    void callApi(JSONObject jsonObject) throws JSONException {
         MediaType JSON = MediaType.get("application/json; charset=utf-8");
         OkHttpClient client = new OkHttpClient();
         String url = "https://fcm.googleapis.com/fcm/send";
         RequestBody body = RequestBody.create(jsonObject.toString(), JSON);
-        Request request = new Request.Builder().url(url).post(body).header("Authorization", "Bearer AAAAN-B-33k:APA91bGzTArlI8HT8jkzjuiXvGwKjrVcFqROn4e8m7wEMJKjZllaOR3srS5IRcp-Wy6uwr_2xYmRrdWQZbUmqq91xVHOrrYjd-mmuejucNuBvM8U9EI1FgZoD6nbp1gXTULaTpayrjPV").build();
+        Request request = new Request.Builder().url(url).post(body).header("Authorization", "Bearer "+ jsonObject.getString("to")).build();
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
